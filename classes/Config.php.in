@@ -18,7 +18,7 @@ class Config
 
         $path = mb_substr($_SERVER['REQUEST_URI'], 0, mb_strrpos($_SERVER['REQUEST_URI'], '/') + 1);
 
-        $this->indexUrl = 'http://'. $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        $this->indexUrl = 'http://'. $_SERVER['HTTP_HOST'] . $path . 'index.php';
         $this->logoutUrl = 'http://'. $_SERVER['HTTP_HOST'] . $path . 'logout.php';
         $this->redirectUrl = 'http://'. $_SERVER['HTTP_HOST'] . $path . 'callback.html';
     }

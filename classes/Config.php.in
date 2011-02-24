@@ -1,0 +1,34 @@
+<?php
+
+class Config
+{
+    public $consumerKey = '';
+    public $consumerSecret = '';
+    public $cookieKey = '';
+    public $indexUrl = '';
+    public $logoutUrl = '';
+    public $redirectUrl = '';
+    public $requiredFields = array('name', 'emails');
+
+    private static $uniqueInstance = NULL;
+
+    protected function __construct()
+    {
+        $this->cookieKey = 'vz_' . $this->consumerKey;
+
+        $path = mb_substr($_SERVER['REQUEST_URI'], 0, mb_strrpos($_SERVER['REQUEST_URI'], '/') + 1);
+
+        $this->indexUrl = 'http://'. $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        $this->logoutUrl = 'http://'. $_SERVER['HTTP_HOST'] . $path . 'logout.php';
+        $this->redirectUrl = 'http://'. $_SERVER['HTTP_HOST'] . $path . 'callback.html';
+    }
+
+    public static function getInstance()
+    {
+        if (self::$uniqueInstance === NULL)
+        {
+            self::$uniqueInstance = new Config();
+        }
+        return self::$uniqueInstance;
+    }
+}

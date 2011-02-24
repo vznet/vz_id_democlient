@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>VZ-ID demo client: callback</title>
+    </head>
+    <body>
+        <script>
+opener.vz.id.authStorage.setAuthParameterHash(location.hash.substr(1));
+var parameters = location.hash.substr(1);
+window.close();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,87 @@
+@charset "UTF-8";
+
+body
+{
+    font-family: Calibri, Optima, sans-serif;
+    margin: 1em auto;
+    max-width: 40em;
+}
+
+a[href^="javascript"] img
+{
+    vertical-align: bottom;
+}
+
+textarea
+{
+    width: 100%;
+}
+
+article
+{
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: #999 -1px 1px 4px 0px;
+    -moz-box-shadow:-1px 1px 4px 0 #999999;
+    box-shadow: -1px 1px 4px 0 #999;
+    filter: progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=-135,strength=3);
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=-135,strength=3)";
+    background: #EEE;
+    display: block;
+    margin: .5em 2px;
+    padding: .5em 1em;
+}
+
+article:first-of-type
+{
+    margin-top: 2em;
+}
+
+article:last-of-type
+{
+    margin-bottom: 2em;
+}
+
+article header
+{
+    border-bottom: 1px solid #CCC;
+    display: block;
+    font-size: 0.8em;
+    overflow: hidden;
+}
+
+article p
+{
+    overflow: hidden;
+}
+
+article p:first-of-type
+{
+    margin-top: .5em;
+}
+
+article p:last-child
+{
+    margin-bottom: 0;
+}
+
+article footer
+{
+    display: block;
+    text-align: right;
+}
+
+div.vz-feed-box
+{
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    font: inherit !important;
+    padding-right: 1em !important;
+}
+
+div.vz-feed-box .message
+{
+    font-size: 0.8em;
+}

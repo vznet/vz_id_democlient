@@ -2,6 +2,8 @@
 
 class SQLite3_DB
 {
+    const DB_FILENAME = 'demo.db';
+
     /**
      *
      * @var SQLite3
@@ -18,16 +20,6 @@ class SQLite3_DB
         {
             $this->_db = new SQLite3($db_filename);
         }
-    }
-
-    public function __destruct()
-    {
-        if ($this->_db !== NULL)
-        {
-            $this->_db->close();
-        }
-
-        $this->_db = NULL;
     }
 }
 

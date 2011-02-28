@@ -4,9 +4,7 @@ require_once 'classes/SQLite3_DB.php';
 
 class User_DB extends SQLite3_DB
 {
-    const DB_FILENAME = 'users.db';
-
-    private static $uniqueInstance = NULL;
+    private static $_uniqueInstance = NULL;
 
     protected function __construct()
     {
@@ -18,29 +16,63 @@ class User_DB extends SQLite3_DB
         {
             $this->_db->query('CREATE TABLE `Users` (
                 `userId` INTEGER PRIMARY KEY,
-                `name` TIMESTAMP NOT NULL,
-                `vzId` TEXT NOT NULL
+                `name` SQLITE3_TEXT NOT NULL,
+                `vzId` SQLITE3_TEXT NOT NULL
             );');
         }
     }
 
-    public function __destruct()
-    {
-        parent::__destruct();
-
-        self::$uniqueInstance = NULL;
-    }
-
+    /**
+     *
+     * @return User_DB user database unique instance
+     */
     public static function getInstance()
     {
-        if (self::$uniqueInstance === NULL)
+        if (self::$_uniqueInstance === NULL)
         {
-            self::$uniqueInstance = new User_DB();
+            self::$_uniqueInstance = new User_DB();
         }
-        return self::$uniqueInstance;
+        return self::$_uniqueInstance;
     }
 
-    public function checkUser($vzId, $name)
+    /**
+     *
+     * @param string $name user name
+     * @param string $vzId VZ id
+     * @return integer user id
+     */
+    public function addUser($name, $vzId)
+    {
+        $stmt = $this->_db->prepare('INSERT INTO Users VALUES (NULL, :name, :vzId)');
+        $stmt->bindParam(':name', $name, SQLITE3_TEXT);
+        $stmt->bindParam(':vzId', $vzId, SQLITE3_TEXT);
+        $stmt->execute();
+        return $this->_db->lastInsertRowID();        
+    }
+    
+     /**
+     *
+     * @param integer $userId user id
+     * @return array user
+     */
+    public function getUserById($userId)
+    {
+        $stmt = $this->_db->prepare('SELECT * FROM Users WHERE userId=:userId');
+        $stmt->bindValue(':userId', $userId, SQLITE3_INTEGER);
+        $result = $stmt->execute();
+
+        if ($user = $result->fetchArray())
+        {
+            return $user;
+        }
+    }
+
+     /**
+     *
+     * @param string $vzId VZ id
+     * @return array user
+     */
+    public function getUserByVzId($vzId)
     {
         $stmt = $this->_db->prepare('SELECT * FROM Users WHERE vzId=:vzId');
         $stmt->bindValue(':vzId', $vzId, SQLITE3_TEXT);
@@ -48,24 +80,22 @@ class User_DB extends SQLite3_DB
 
         if ($user = $result->fetchArray())
         {
-            if ($user['name'] != $name)
-            {
-                $stmt = $this->_db->prepare('UPDATE Users SET name = :name WHERE vzId=:vzId');
-                $stmt->bindParam(':name', $name, SQLITE3_TEXT);
-                $stmt->bindValue(':vzId', $vzId, SQLITE3_TEXT);
-                $stmt->execute();
-            }
-            return $user['userId'];
-        }
-        else
-        {
-            $stmt = $this->_db->prepare('INSERT INTO Users VALUES (null, :name, :vzId)');
-            $stmt->bindParam(':name', $name, SQLITE3_TEXT);
-            $stmt->bindParam(':vzId', $vzId, SQLITE3_TEXT);
-            $stmt->execute();
-            return $this->_db->lastInsertRowID();
+            return $user;
         }
     }
-}
+
+    /**
+     *
+     * @param integer $userId user id
+     * @param string $name user name
+     */
+    public function updateUserName($userId, $name)
+    {
+        $stmt = $this->_db->prepare('UPDATE Users SET name = :name WHERE userId=:userId');
+        $stmt->bindParam(':name', $name, SQLITE3_TEXT);
+        $stmt->bindValue(':userId', $userId, SQLITE3_INTEGER);
+        $stmt->execute();
+    }
+ }
 
 class User_DB_Exception extends SQLite3_DB_Exception {}

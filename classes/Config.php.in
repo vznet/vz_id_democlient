@@ -10,7 +10,7 @@ class Config
     public $redirectUrl = '';
     public $requiredFields = array('name', 'emails');
 
-    private static $uniqueInstance = NULL;
+    private static $_uniqueInstance = NULL;
 
     protected function __construct()
     {
@@ -23,12 +23,16 @@ class Config
         $this->redirectUrl = 'http://'. $_SERVER['HTTP_HOST'] . $path . 'callback.html';
     }
 
+    /**
+     *
+     * @return Config configuration unique instance
+     */
     public static function getInstance()
     {
-        if (self::$uniqueInstance === NULL)
+        if (self::$_uniqueInstance === NULL)
         {
-            self::$uniqueInstance = new Config();
+            self::$_uniqueInstance = new Config();
         }
-        return self::$uniqueInstance;
+        return self::$_uniqueInstance;
     }
 }

@@ -1,15 +1,16 @@
 <?php
 
 require_once 'classes/SQLite3_DB.php';
+require_once 'classes/User_DB.php';
 
 class Comment_DB extends SQLite3_DB
 {
-    const DB_FILENAME = 'comments.db';
-
-    private static $uniqueInstance = NULL;
+    private static $_uniqueInstance = NULL;
 
     protected function __construct()
     {
+        $user_db = User_DB::getInstance();
+
         parent::__construct(self::DB_FILENAME);
 
         $result = $this->_db->query("SELECT name FROM sqlite_master WHERE name='Comments' AND type='table'");
@@ -19,29 +20,26 @@ class Comment_DB extends SQLite3_DB
             $this->_db->query('CREATE TABLE `Comments` (
                 `commentId` INTEGER PRIMARY KEY,
                 `timestamp` TIMESTAMP NOT NULL,
-                `userId` INTEGER NOT NULL,
-                `commentText` TEXT NOT NULL
+                `userId` SQLITE3_INTEGER NOT NULL,
+                `commentText` SQLITE3_TEXT NOT NULL
             );');
         }
     }
 
-    public function  __destruct()
-    {
-        parent::__destruct();
-
-        self::$uniqueInstance = NULL;
-    }
-
+    /**
+     *
+     * @return Comment_DB comment database unique instance
+     */
     public static function getInstance()
     {
-        if (self::$uniqueInstance === NULL)
+        if (self::$_uniqueInstance === NULL)
         {
-            self::$uniqueInstance = new Comment_DB();
+            self::$_uniqueInstance = new Comment_DB();
         }
-        return self::$uniqueInstance;
+        return self::$_uniqueInstance;
     }
 
-        /**
+    /**
      * add a comment
      *
      * @param string $userId VZ user id

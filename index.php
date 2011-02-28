@@ -1,38 +1,35 @@
 <?php
+    require_once 'classes/Config.php';
+    $config = Config::getInstance();
+
     require_once 'classes/Comment_DB.php';
     $comment_db = Comment_DB::getInstance();
     $comments = $comment_db->getComments();
 
-    require_once 'classes/User_DB.php';
-    $user_db = User_DB::getInstance();
-
-    require_once 'classes/User.php';
-    $user = new User();
-
-    require_once 'classes/Config.php';
-    $config = Config::getInstance();
+    require_once 'classes/Session.php';
+    $session = new Session();
 
     require_once 'classes/Comment_Post.php';
     $commentPost = new Comment_Post();
 
     try
     {
-        $isLoggedIn = $user->checkLogin(); // $user = $session->getCurrentUser();
+        $user = $session->getCurrentUser();
     }
-    catch (User_Exception $e)
+    catch (Session_Exception $e)
     {
         print_r('not logged in; exception: %1$s', $e);
         header('Location: ' . $config->logoutUrl);
     }
 
-    if ($commentPost->isValid() && $isLoggedIn)
+    if ($commentPost->isValid() && $user)
     {
-        $comment_db->addComment($user->getId(), $commentPost->commentText);
+        $comment_db->addComment($user['userId'], $commentPost->commentText);
         header('Location: ' . $config->indexUrl);
     }
     else
     {
-        $name = $user->getName();
+        $name = $user['name'];
         if (!$name)
         {
             $name = 'no name';
@@ -55,7 +52,7 @@
         ></script>
     </head>
     <body>
-<?php if ($isLoggedIn): $name = $user->getName(); ?>
+<?php if ($user): $name = $user['name']; ?>
         <p>Commenting as <?php echo htmlspecialchars($name) ?><?php if (mb_strlen($name) > 0 && $name[mb_strlen($name) - 1] != '.') echo '.' ?> (If you are not <?php echo htmlspecialchars($name) ?>, <a href="<?php echo $config->logoutUrl ?>">log out</a>.)</p>
         <form action="" method="post">
             <textarea name="commentText" rows="5" autofocus="autofocus" required="required"></textarea>
@@ -98,7 +95,7 @@ fields : <?php echo implode(',', $config->requiredFields) . PHP_EOL ?>
         <article id="comment<?php echo $comment['commentId'] ?>" lang="und">
             <header>
                 <?php echo htmlspecialchars($comment['name']) ?>,
-                <time><?php echo date("Y-m-d H:i", $comment['timestamp']) ?></time>
+                <time pubdate="pubdate" datetime="<?php echo date("c", $comment['timestamp']) ?>"><?php echo date("Y-m-d H:i", $comment['timestamp']) ?></time>
             </header>
             <p><?php echo nl2br(htmlspecialchars($comment['commentText'])); ?></p>
             <footer>

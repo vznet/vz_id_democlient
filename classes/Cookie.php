@@ -1,8 +1,5 @@
 <?php
 
-/**
- * @author gbittersmann
- */
 class Cookie
 {
     /**

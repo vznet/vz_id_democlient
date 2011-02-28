@@ -7,11 +7,11 @@ require_once 'classes/Post.php';
  */
 class Comment_Post extends Post
 {
-    protected $fields = array
+    protected $_fields = array
     (
         'commentText' => array
         (
-            'required' => true,
+            'required' => TRUE,
             'type' => 'string',
         ),
     );

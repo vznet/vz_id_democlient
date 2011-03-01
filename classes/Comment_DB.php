@@ -1,5 +1,6 @@
 <?php
 
+require_once 'classes/Config.php';
 require_once 'classes/SQLite3_DB.php';
 require_once 'classes/User_DB.php';
 
@@ -9,21 +10,25 @@ class Comment_DB extends SQLite3_DB
 
     protected function __construct()
     {
+        // make sure that user database exists
         $user_db = User_DB::getInstance();
 
         parent::__construct(self::DB_FILENAME);
 
+        // create comment database if not existent
         $result = $this->_db->query("SELECT name FROM sqlite_master WHERE name='Comments' AND type='table'");
-
         if (!$result->fetchArray(SQLITE3_ASSOC))
         {
             $this->_db->query('CREATE TABLE `Comments` (
                 `commentId` INTEGER PRIMARY KEY,
-                `timestamp` TIMESTAMP NOT NULL,
+                `created` INTEGER NOT NULL,
                 `userId` SQLITE3_INTEGER NOT NULL,
-                `commentText` SQLITE3_TEXT NOT NULL
+                `commentText` SQLITE3_TEXT NOT NULL,
+                `expires` INTEGER
             );');
         }
+
+        $this->deleteExpiredComments();
     }
 
     /**
@@ -47,12 +52,39 @@ class Comment_DB extends SQLite3_DB
      */
     public function addComment($userId, $commentText)
     {
+        $config = Config::getInstance();
         $time = time();
-        $insertStmt = $this->_db->prepare('INSERT INTO Comments VALUES(null, :timestamp, :userId, :commentText)');
-        $insertStmt->bindParam(':timestamp', $time, SQLITE3_INTEGER);
-        $insertStmt->bindParam(':userId', $userId, SQLITE3_INTEGER);
-        $insertStmt->bindParam(':commentText', $commentText, SQLITE3_TEXT);
-        $insertStmt->execute();
+        $expires = (isset($config->commentDuration) && $config->commentDuration != 0) ? $time + $config->commentDuration : 0;
+
+        $stmt = $this->_db->prepare('INSERT INTO Comments VALUES(null, :created, :userId, :commentText, :expires)');
+        $stmt->bindParam(':created', $time, SQLITE3_INTEGER);
+        $stmt->bindParam(':userId', $userId, SQLITE3_INTEGER);
+        $stmt->bindParam(':commentText', $commentText, SQLITE3_TEXT);
+        $stmt->bindParam(':expires', $expires, SQLITE3_INTEGER);
+        $stmt->execute();
+    }
+
+    /**
+     * delete a comment by id
+     *
+     * @param integer $commentId comment id
+     */
+    public function deleteCommentById($commentId)
+    {
+        $stmt = $this->_db->prepare('DELETE FROM Comments WHERE commentId = :commentId;');
+        $stmt->bindParam(':commentId', $commentId, SQLITE3_INTEGER);
+        $stmt->execute();
+    }
+
+    /**
+     * delete all expired comments
+     */
+    public function deleteExpiredComments()
+    {
+        $time = time();
+        $stmt = $this->_db->prepare('DELETE FROM Comments WHERE expires <> 0 AND expires < :expires;');
+        $stmt->bindParam(':expires', $time, SQLITE3_INTEGER);
+        $stmt->execute();
     }
 
     /**

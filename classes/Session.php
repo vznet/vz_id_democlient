@@ -1,7 +1,7 @@
 <?php
 
-require_once 'classes/Cookie.php';
 require_once 'classes/Config.php';
+require_once 'classes/Cookie.php';
 require_once 'classes/User_DB.php';
 
 class Session

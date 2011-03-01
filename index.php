@@ -42,7 +42,12 @@
     <head>
         <meta charset="UTF-8"/>
         <title>VZ-ID demo client</title>
-        <!--[if IE]><script src="ie.js"/></script><![endif]-->
+<!--[if IE]>
+        <script>
+html5elements = ['article', 'footer', 'header'];
+for (var i = 0; i < html5elements.length; i++) document.createElement(html5elements[i]);
+        </script>
+<![endif]-->
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
         <link rel="stylesheet" href="default.css"/>
         <link rel="stylesheet" href="http://static.pe.studivz.net/Js/id/v3/library.css"/>
@@ -92,12 +97,12 @@ fields : <?php echo implode(',', $config->requiredFields) . PHP_EOL ?>
         <p>No comments yet.</p>
 <?php else: ?>
     <?php foreach($comments as $comment): ?>
-        <article id="comment<?php echo $comment['commentId'] ?>" lang="und">
+        <article id="comment<?php echo $comment['commentId'] ?>">
             <header>
                 <?php echo htmlspecialchars($comment['name']) ?>,
-                <time pubdate="pubdate" datetime="<?php echo date("c", $comment['timestamp']) ?>"><?php echo date("Y-m-d H:i", $comment['timestamp']) ?></time>
+                <time pubdate="pubdate" datetime="<?php echo date("c", $comment['created']) ?>"><?php echo date("Y-m-d H:i", $comment['created']) ?></time>
             </header>
-            <p><?php echo nl2br(htmlspecialchars($comment['commentText'])); ?></p>
+            <p lang="und"><?php echo nl2br(htmlspecialchars($comment['commentText'])); ?></p>
             <footer>
                 <script type="vz/share">
 url: <?php echo $config->indexUrl . '#comment' . $comment['commentId'] . PHP_EOL ?>

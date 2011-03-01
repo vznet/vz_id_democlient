@@ -12,7 +12,7 @@ abstract class Post
         {
             if (isset($_POST[$name]) && $_POST[$name])
             {
-                $this->data[$name] = $_POST[$name];
+                $this->_data[$name] = $_POST[$name];
             }
             else if ($definition['required'])
             {

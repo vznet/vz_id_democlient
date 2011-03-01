@@ -2,6 +2,7 @@
 
 class Config
 {
+    public $commentDuration = 300; // seconds; 0 - never expire
     public $consumerKey = '';
     public $consumerSecret = '';
     public $cookieKey = '';

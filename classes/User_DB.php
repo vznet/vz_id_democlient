@@ -4,6 +4,10 @@ require_once 'classes/SQLite3_DB.php';
 
 class User_DB extends SQLite3_DB
 {
+    /**
+     *
+     * @var User_DB
+     */
     private static $_uniqueInstance = NULL;
 
     protected function __construct()

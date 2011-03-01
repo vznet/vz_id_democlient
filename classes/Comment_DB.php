@@ -6,6 +6,10 @@ require_once 'classes/User_DB.php';
 
 class Comment_DB extends SQLite3_DB
 {
+    /**
+     *
+     * @var Comment_DB
+     */
     private static $_uniqueInstance = NULL;
 
     protected function __construct()

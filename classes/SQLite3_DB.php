@@ -1,9 +1,9 @@
 <?php
 
+require_once 'classes/Config.php';
+
 class SQLite3_DB
 {
-    const DB_FILENAME = 'demo.db';
-
     /**
      *
      * @var SQLite3
@@ -12,9 +12,11 @@ class SQLite3_DB
 
     protected function __construct()
     {
+        $config = Config::getInstance();
+
         if ($this->_db === NULL)
         {
-            $this->_db = new SQLite3(self::DB_FILENAME);
+            $this->_db = new SQLite3($config->db_filename);
         }
     }
 }

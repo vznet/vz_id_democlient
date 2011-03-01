@@ -18,22 +18,15 @@
     }
     catch (Session_Exception $e)
     {
-        print_r('not logged in; exception: %1$s', $e);
         header('Location: ' . $config->logoutUrl);
+        die();
     }
 
     if ($commentPost->isValid() && $user)
     {
         $comment_db->addComment($user['userId'], $commentPost->commentText);
         header('Location: ' . $config->indexUrl);
-    }
-    else
-    {
-        $name = $user['name'];
-        if (!$name)
-        {
-            $name = 'no name';
-        }
+        die();
     }
 
 ?>
@@ -66,7 +59,7 @@ for (var i = 0; i < html5elements.length; i++) document.createElement(html5eleme
 <?php else: ?>
         <p>
             <script>
-function logResponse(c)
+function login(c)
 {
     if (c.error)
     {
@@ -87,7 +80,7 @@ function logResponse(c)
             <script type="vz/login">
 client_id : <?php echo $config->consumerKey . PHP_EOL ?>
 redirect_uri : <?php echo $config->redirectUrl . PHP_EOL ?>
-callback : logResponse
+callback : login
 fields : <?php echo implode(',', $config->requiredFields) . PHP_EOL ?>
             </script>
         </p>

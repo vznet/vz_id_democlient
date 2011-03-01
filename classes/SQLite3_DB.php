@@ -10,15 +10,11 @@ class SQLite3_DB
      */
     protected $_db = NULL;
 
-    /**
-     *
-     * @param string $db_filename data base file name
-     */
-    protected function __construct($db_filename)
+    protected function __construct()
     {
         if ($this->_db === NULL)
         {
-            $this->_db = new SQLite3($db_filename);
+            $this->_db = new SQLite3(self::DB_FILENAME);
         }
     }
 }

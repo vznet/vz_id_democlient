@@ -13,7 +13,7 @@ class Comment_DB extends SQLite3_DB
         // make sure that user database exists
         $user_db = User_DB::getInstance();
 
-        parent::__construct(self::DB_FILENAME);
+        parent::__construct();
 
         // create comment database if not existent
         $result = $this->_db->query("SELECT name FROM sqlite_master WHERE name='Comments' AND type='table'");

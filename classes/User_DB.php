@@ -8,7 +8,7 @@ class User_DB extends SQLite3_DB
 
     protected function __construct()
     {
-        parent::__construct(self::DB_FILENAME);
+        parent::__construct();
 
         // create user database if not existent
         $result = $this->_db->query("SELECT name FROM sqlite_master WHERE name='Users' AND type='table'");

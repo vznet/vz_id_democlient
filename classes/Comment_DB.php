@@ -19,7 +19,7 @@ class Comment_DB extends SQLite3_DB
 
         parent::__construct();
 
-        //$this->createTable();
+        $this->createTable();
     }
 
     /**

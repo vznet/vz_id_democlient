@@ -38,7 +38,7 @@
         <title>VZ-ID demo client</title>
 <!--[if IE]>
         <script>
-html5elements = ['article', 'footer', 'header'];
+html5elements = ['article', 'footer', 'header', 'section'];
 for (var i = 0; i < html5elements.length; i++) document.createElement(html5elements[i]);
         </script>
 <![endif]-->
@@ -51,15 +51,16 @@ for (var i = 0; i < html5elements.length; i++) document.createElement(html5eleme
         ></script>
     </head>
     <body>
+        <section id="commenting">
 <?php if ($user): $name = $user['name']; ?>
-        <p>Commenting as <?php echo htmlspecialchars($name) ?><?php if (mb_strlen($name) > 0 && $name[mb_strlen($name) - 1] != '.') echo '.' ?> (If you are not <?php echo htmlspecialchars($name) ?>, <a href="<?php echo $config->logoutUrl ?>">log out</a>.)</p>
-        <form action="" method="post">
-            <textarea name="commentText" rows="5" autofocus="autofocus" required="required"></textarea>
-            <button type="submit">Send</button>
-        </form>
+            <p>Commenting as <?php echo htmlspecialchars($name) ?><?php if (mb_strlen($name) > 0 && $name[mb_strlen($name) - 1] != '.') echo '.' ?> (If you are not <?php echo htmlspecialchars($name) ?>, <a href="<?php echo $config->logoutUrl ?>">log out</a>.)</p>
+            <form action="" method="post">
+                <textarea name="commentText" rows="5" autofocus="autofocus" required="required"></textarea>
+                <button type="submit">Send</button>
+            </form>
 <?php else: ?>
-        <p>
-            <script>
+            <p>
+                <script>
 function login(c)
 {
     if (c.error)
@@ -76,37 +77,40 @@ function login(c)
     document.cookie = '<?php echo $config->cookieKey ?>' + '=' +  encodeURIComponent(parameters);
     document.location.href = '<?php echo $config->indexUrl ?>';
 }
-            </script>
+                </script>
 
-            <script type="vz/login">
+                <script type="vz/login">
 client_id : <?php echo $config->consumerKey . PHP_EOL ?>
 redirect_uri : <?php echo $config->redirectUrl . PHP_EOL ?>
 callback : login
 fields : <?php echo implode(',', $config->requiredFields) . PHP_EOL ?>
-            </script>
-        </p>
+                </script>
+            </p>
 <?php endif ?>
 
 <?php if (empty($comments)): ?>
-        <p>No comments yet.</p>
+            <p>No comments yet.</p>
 <?php else: ?>
     <?php foreach($comments as $comment): ?>
-        <article id="comment<?php echo $comment['commentId'] ?>">
-            <header>
-                <?php echo htmlspecialchars($comment['name']) ?>,
-                <time pubdate="pubdate" datetime="<?php echo date("c", $comment['created']) ?>"><?php echo date("Y-m-d H:i", $comment['created']) ?></time>
-            </header>
-            <p lang="und"><?php echo nl2br(htmlspecialchars($comment['commentText'])); ?></p>
-            <footer>
-                <script type="vz/share">
+            <article id="comment<?php echo $comment['commentId'] ?>">
+                <header>
+                    <?php echo htmlspecialchars($comment['name']) ?>,
+                    <time pubdate="pubdate" datetime="<?php echo date("c", $comment['created']) ?>"><?php echo date("Y-m-d H:i", $comment['created']) ?></time>
+                </header>
+                <p lang="und"><?php echo nl2br(htmlspecialchars($comment['commentText'])); ?></p>
+                <footer>
+                    <script type="vz/share">
 url: <?php echo $config->indexUrl . '#comment' . $comment['commentId'] . PHP_EOL ?>
 description: <?php echo htmlspecialchars(mb_strimwidth(str_replace(array("\r\n", "\n", "\r"), ' ', $comment['commentText']), 0, 100, '…')) . PHP_EOL ?>
-                </script>
-            </footer>
-        </article>
+                    </script>
+                </footer>
+            </article>
     <?php endforeach ?>
 <?php endif ?>
-        <script type="vz/feedBox">
-        </script>
+        </section>
+        <section id="suggesting">
+            <script type="vz/feedBox">
+            </script>
+        </section>
     </body>
 </html>

@@ -19,7 +19,14 @@ class Comment_DB extends SQLite3_DB
 
         parent::__construct();
 
-        // create comment database if not existent
+        //$this->createTable();
+    }
+
+    /**
+     * create comment table if not existent
+     */
+    public function createTable()
+    {
         $result = $this->_db->query("SELECT name FROM sqlite_master WHERE name='Comments' AND type='table'");
         if (!$result->fetchArray(SQLITE3_ASSOC))
         {
@@ -31,8 +38,6 @@ class Comment_DB extends SQLite3_DB
                 `expires` INTEGER
             );');
         }
-
-        $this->deleteExpiredComments();
     }
 
     /**

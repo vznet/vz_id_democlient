@@ -4,6 +4,7 @@
 
     require_once 'classes/Comment_DB.php';
     $comment_db = Comment_DB::getInstance();
+    $comment_db->deleteExpiredComments();
     $comments = $comment_db->getComments();
 
     require_once 'classes/Session.php';

@@ -19,6 +19,11 @@ class SQLite3_DB
             $this->_db = new SQLite3($config->db_filename);
         }
     }
+
+    /*
+     * create table if not existent
+     */
+    public function createTable() {}
 }
 
 class SQLite3_DB_Exception extends Exception {}

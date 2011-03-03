@@ -14,7 +14,14 @@ class User_DB extends SQLite3_DB
     {
         parent::__construct();
 
-        // create user database if not existent
+        //$this->createTable();
+}
+
+    /**
+     * create user table if not existent
+     */
+    public function createTable()
+    {
         $result = $this->_db->query("SELECT name FROM sqlite_master WHERE name='Users' AND type='table'");
         if (!$result->fetchArray(SQLITE3_ASSOC))
         {

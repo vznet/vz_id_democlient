@@ -17,7 +17,8 @@ class Config
     {
         $this->cookieKey = 'vz_' . $this->consumerKey;
 
-        $path = mb_substr($_SERVER['REQUEST_URI'], 0, mb_strrpos($_SERVER['REQUEST_URI'], '/') + 1);
+        $requestUri = htmlspecialchars($_SERVER['REQUEST_URI']);
+        $path = mb_substr($requestUri, 0, mb_strrpos($requestUri, '/') + 1);
 
         $this->indexUrl = 'http://'. $_SERVER['HTTP_HOST'] . $path . 'index.php';
         $this->logoutUrl = 'http://'. $_SERVER['HTTP_HOST'] . $path . 'logout.php';

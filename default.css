@@ -1,10 +1,45 @@
 @charset "UTF-8";
 
-body
+html
 {
     font-family: Calibri, Optima, sans-serif;
+    overflow: auto;
+}
+
+body
+{
     margin: 1em auto;
-    max-width: 40em;
+    max-width: 60em;
+    overflow: hidden;
+}
+
+aside, article, footer, header, section
+{
+    display: block;
+}
+
+body>article
+{
+    clear: left;
+    float: left;
+    max-width: 35em;
+    min-width: 20em;
+}
+
+section
+{
+    border-top: 1px solid #CCC;
+    margin: 2em 0 1em;
+}
+
+p
+{
+    line-height: 1.4em;
+}
+
+a
+{
+    color: #E00;
 }
 
 a[href^="javascript"] img
@@ -12,63 +47,71 @@ a[href^="javascript"] img
     vertical-align: bottom;
 }
 
-textarea
+.reference
 {
+    font-size: 1.5em;
+    vertical-align: middle;
+}
+
+#commenting>p .reference
+{
+    float: left;
+    margin-right: 0.3em;
+}
+
+#commenting
+{
+    border: 1px solid #CCC;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    float: right;
+    padding: 0 1em;
+    overflow: hidden;
+    width: 20em;
+}
+
+*+html #commenting
+{
+    padding: 1em;
+}
+
+#commenting textarea
+{
+    margin-bottom: 1em;
     width: 100%;
 }
 
-article
+#commenting article
 {
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    -webkit-box-shadow: #999 -1px 1px 4px 0px;
-    -moz-box-shadow:-1px 1px 4px 0 #999999;
-    box-shadow: -1px 1px 4px 0 #999;
-    filter: progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=-135,strength=3);
-    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=-135,strength=3)";
-    background: #EEE;
-    display: block;
+    border-top: 3px dotted #CCC;
     margin: .5em 2px;
-    padding: .5em 1em;
+    padding: .5em 0;
 }
 
-article:first-of-type
+#commenting article header
 {
-    margin-top: 2em;
-}
-
-article:last-of-type
-{
-    margin-bottom: 2em;
-}
-
-article header
-{
-    border-bottom: 1px solid #CCC;
-    display: block;
     font-size: 0.8em;
     overflow: hidden;
 }
 
-article p
+#commenting article p
 {
     overflow: hidden;
 }
 
-article p:first-of-type
+#commenting article p:first-of-type
 {
     margin-top: .5em;
 }
 
-article p:last-child
+#commenting article p:last-child
 {
     margin-bottom: 0;
 }
 
-article footer
+#commenting article footer
 {
-    display: block;
     text-align: right;
 }
 
@@ -79,9 +122,11 @@ div.vz-feed-box
     border-radius: 5px;
     font: inherit !important;
     padding-right: 1em !important;
+    vertical-align: top;
 }
 
 div.vz-feed-box .message
 {
+    color: black;
     font-size: 0.8em;
 }

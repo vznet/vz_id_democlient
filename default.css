@@ -56,7 +56,7 @@ a[href^="javascript"] img
 #commenting>p .reference
 {
     float: left;
-    margin-right: 0.3em;
+    margin: 0 0.3em 1em 0;
 }
 
 #commenting

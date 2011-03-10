@@ -1,0 +1,1 @@
+To make this application running, you need to insert your consumer key and secret into the configuration 'Config.php.in' and rename the file to 'Config.php'.

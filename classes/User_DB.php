@@ -4,24 +4,13 @@ require_once 'classes/SQLite3_DB.php';
 
 class User_DB extends SQLite3_DB
 {
-    /**
-     *
-     * @var User_DB
-     */
     private static $_uniqueInstance = NULL;
 
     protected function __construct()
     {
         parent::__construct();
 
-        $this->createTable();
-}
-
-    /**
-     * create user table if not existent
-     */
-    public function createTable()
-    {
+        // create user database if not existent
         $result = $this->_db->query("SELECT name FROM sqlite_master WHERE name='Users' AND type='table'");
         if (!$result->fetchArray(SQLITE3_ASSOC))
         {

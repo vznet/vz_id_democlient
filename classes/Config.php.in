@@ -5,11 +5,15 @@ class Config
     public $commentDuration = 300; // seconds; 0 - never expire
     public $consumerKey = '';
     public $consumerSecret = '';
-    public $cookieKey = '';
+    public $cookieKey = 'vzid';
+    public $cookieKeyJanRain = 'janraintoken';
     public $indexUrl = '';
     public $logoutUrl = '';
     public $redirectUrl = '';
     public $requiredFields = array('name', 'emails');
+
+    //For a production script it would be better to include the apiKey in from a file outside the web root to enhance security.
+    public $rpxApiKey = '';
 
     private static $_uniqueInstance = NULL;
 
@@ -17,8 +21,7 @@ class Config
     {
         $this->cookieKey = 'vz_' . $this->consumerKey;
 
-        $requestUri = htmlspecialchars($_SERVER['REQUEST_URI']);
-        $path = mb_substr($requestUri, 0, mb_strrpos($requestUri, '/') + 1);
+        $path = mb_substr($_SERVER['REQUEST_URI'], 0, mb_strrpos($_SERVER['REQUEST_URI'], '/') + 1);
 
         $this->indexUrl = 'http://'. $_SERVER['HTTP_HOST'] . $path . 'index.php';
         $this->logoutUrl = 'http://'. $_SERVER['HTTP_HOST'] . $path . 'logout.php';

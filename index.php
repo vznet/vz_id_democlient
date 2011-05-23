@@ -13,9 +13,17 @@
     require_once 'classes/Comment_Post.php';
     $commentPost = new Comment_Post();
 
+    $janRainAuthorized = false;
+
     try
     {
         $user = $session->getCurrentUser();
+        if (!$user) {
+            $user = $session->getJanRainUser();
+            if ($user) {
+                $janRainAuthorized = true;
+            }
+        }
     }
     catch (Session_Exception $e)
     {
@@ -86,7 +94,19 @@ description: VZ-ID demo client
                 <h3>Sharing individual page elements</h3>
                 <p>You can also integrate sharing more deeply with your site interactions by tying it to individual functionalities, in this example to a single comment. See <span class="reference">Ⓑ</span> on the right.</p>
             </section>
+            <section>
+                <h3>Or use VZ Login with Janrain</h3>
+                <p>If you have an JanRain.com account, you can use their simple overlay implementaion.</p>
+                <p>
+                    <?php if (!$janRainAuthorized): ?>
+                    <a class="rpxnow" onclick="return false;" href="https://vziddemo.rpxnow.com/openid/v2/signin?token_url=<?php echo urlencode('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']) ?>">Sign In</a>
+                    <?php else: ?>
+                    Your are already logged in!
+                    <?php endif ?>
+                </p>
+            </section>
         </article>
+
         <aside id="commenting">
 <?php if ($user): $name = $user['name']; ?>
             <p><span class="reference">Ⓐ</span>
@@ -148,5 +168,16 @@ description: <?php echo htmlspecialchars(mb_strimwidth(str_replace(array("\r\n",
     <?php endforeach ?>
 <?php endif ?>
         </aside>
+
+    <!-- Janrain -->
+<script type="text/javascript">
+  var rpxJsHost = (("https:" == document.location.protocol) ? "https://" : "http://static.");
+  document.write(unescape("%3Cscript src='" + rpxJsHost +
+"rpxnow.com/js/lib/rpx.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+  RPXNOW.overlay = true;
+  RPXNOW.language_preference = 'en';
+</script>
     </body>
 </html>

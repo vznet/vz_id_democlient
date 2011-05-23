@@ -12,4 +12,9 @@ class Cookie
     {
         return isset($_COOKIE[$key]) ? $_COOKIE[$key] : null;
     }
+
+    public function setValue($name, $value)
+    {
+        setcookie($name, $value);
+    }
 }
